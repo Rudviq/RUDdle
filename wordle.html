@@ -61,39 +61,39 @@
         </div>
         <div class="keyboard">
             <div class="keyboard-row">
-                <button type="button" class="keys">Q</button>
-                <button type="button" class="keys">W</button>
-                <button type="button" class="keys">E</button>
-                <button type="button" class="keys">R</button>
-                <button type="button" class="keys">T</button>
-                <button type="button" class="keys">Y</button>
-                <button type="button" class="keys">U</button>
-                <button type="button" class="keys">I</button>
-                <button type="button" class="keys">O</button>
-                <button type="button" class="keys">P</button>
+                <button type="button" class="keys" data-key="Q">Q</button>
+                <button type="button" class="keys" data-key="W">W</button>
+                <button type="button" class="keys" data-key="E">E</button>
+                <button type="button" class="keys" data-key="R">R</button>
+                <button type="button" class="keys" data-key="T">T</button>
+                <button type="button" class="keys" data-key="Y">Y</button>
+                <button type="button" class="keys" data-key="U">U</button>
+                <button type="button" class="keys" data-key="I">I</button>
+                <button type="button" class="keys" data-key="O">O</button>
+                <button type="button" class="keys" data-key="P">P</button>
             </div>
             <div class="keyboard-row">
                 <div data-testid="spacer" class="space"></div>
-                <button type="button" class="keys">A</button>
-                <button type="button" class="keys">S</button>
-                <button type="button" class="keys">D</button>
-                <button type="button" class="keys">F</button>
-                <button type="button" class="keys">G</button>
-                <button type="button" class="keys">H</button>
-                <button type="button" class="keys">J</button>
-                <button type="button" class="keys">K</button>
-                <button type="button" class="keys">L</button>
+                <button type="button" class="keys" data-key="A">A</button>
+                <button type="button" class="keys" data-key="S">S</button>
+                <button type="button" class="keys" data-key="D">D</button>
+                <button type="button" class="keys" data-key="F">F</button>
+                <button type="button" class="keys" data-key="G">G</button>
+                <button type="button" class="keys" data-key="H">H</button>
+                <button type="button" class="keys" data-key="J">J</button>
+                <button type="button" class="keys" data-key="K">K</button>
+                <button type="button" class="keys" data-key="L">L</button>
                 <div data-testid="spacer" class="space"></div>
             </div>
             <div class="keyboard-row">
                 <button type="button" class="keys" style="font-size: 12px;">ENTER</button>
-                <button type="button" class="keys">Z</button>
-                <button type="button" class="keys">X</button>
-                <button type="button" class="keys">C</button>
-                <button type="button" class="keys">V</button>
-                <button type="button" class="keys">B</button>
-                <button type="button" class="keys">N</button>
-                <button type="button" class="keys">M</button>
+                <button type="button" class="keys" data-key="Z">Z</button>
+                <button type="button" class="keys"data-key="X">X</button>
+                <button type="button" class="keys" data-key="C">C</button>
+                <button type="button" class="keys" data-key="V">V</button>
+                <button type="button" class="keys" data-key="B">B</button>
+                <button type="button" class="keys" data-key="N">N</button>
+                <button type="button" class="keys" data-key="M">M</button>
                 <button type="button" class="keys" style="font-size: 12px;">DEL</button>
                 
             </div>
@@ -113,7 +113,6 @@
     letterButtons.forEach(key => {
         
         key.addEventListener('click', () => {
-
             const gameContainer = document.querySelectorAll('.game-container')[i];
             // const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
             const letterKeys = gameContainer.querySelectorAll('.letter-keys');
@@ -171,29 +170,8 @@
             i = i+1;
             j=0;
 
-            const color = new Array(length).fill('W');
-            let guessed_word = '';
-            
-            letterKeys.forEach((letterKey)=>{
-                guessed_word += letterKey.textContent;
-            });
+            generatecolors(letterKeys);
 
-            for( let k=0; k<5; k++ ){
-                if (actual_array.includes(guessed_word[k])){
-                    if( actual_array[k] == guessed_word[k]){
-                        color[k] = 'G';
-                        letterKeys[k].style.background = '#227526';
-                    }
-                    else{
-                        color[k] = 'Y';
-                        letterKeys[k].style.background = '#8C8818';
-                    }
-                }
-                else{
-                    color[k] = 'B';
-                    letterKeys[k].style.background = '#656565';
-                }
-            }
         }
 
         if(event.key == 'Backspace' || event.keyCode == 8){
@@ -230,18 +208,32 @@
             }
         }
 
-        // updateKeyboardBackground(color,guessed_word);
+        updateKeyboardBackground(color,guessed_word);
     }
 
     function updateKeyboardBackground(color,guessed_word){
-        letterButtons.forEach(key => {
-            const letter = key.textContent;
-            if (word.includes(letter)) {
-                key.style.backgroundColor = 'yellow'; // Change the background color
-            } else {
-                key.style.backgroundColor = ''; // Reset the background color
+
+        for( let k=0; k<5; k++ ){
+            var targetKey = guessed_word[k];
+            const keyElement = document.querySelector(`[data-key="${targetKey}"]`);
+
+            const backgroundColor = window.getComputedStyle(keyElement).getPropertyValue('background-color');
+            console.log(targetKey);
+            console.log(backgroundColor);
+            // console.log(document.querySelector(`[data-key="${targetKey}"]`).textContent);
+            if( color[k] == 'G' ){
+                keyElement.style.background = '#227526';
+            }else if( color[k] == 'Y' ){
+                if( backgroundColor != "rgb(34, 117, 38)" ){
+                    console.log('I m in');
+                    keyElement.style.background = '#8C8818';
+                }
+            }else if( color[k] == 'B' ){
+                keyElement.style.background = '#252525';
             }
-        });
+        }
+        
+        
     }
     
     </script>
