@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Ruddle</title>
+</head>
+<body>
+    <div class="topnav">
+        <h3>Wordle</h3>
+    </div>
+    <main class="main">
+        <div class="container" style="overflow: unset;">
+            <div class="game" style="width: 350px;height: 420px;">  
+                
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="keyboard">
+            <div class="keyboard-row">
+                <button type="button" class="keys">Q</button>
+                <button type="button" class="keys">W</button>
+                <button type="button" class="keys">E</button>
+                <button type="button" class="keys">R</button>
+                <button type="button" class="keys">T</button>
+                <button type="button" class="keys">Y</button>
+                <button type="button" class="keys">U</button>
+                <button type="button" class="keys">I</button>
+                <button type="button" class="keys">O</button>
+                <button type="button" class="keys">P</button>
+            </div>
+            <div class="keyboard-row">
+                <div data-testid="spacer" class="space"></div>
+                <button type="button" class="keys">A</button>
+                <button type="button" class="keys">S</button>
+                <button type="button" class="keys">D</button>
+                <button type="button" class="keys">F</button>
+                <button type="button" class="keys">G</button>
+                <button type="button" class="keys">H</button>
+                <button type="button" class="keys">J</button>
+                <button type="button" class="keys">K</button>
+                <button type="button" class="keys">L</button>
+                <div data-testid="spacer" class="space"></div>
+            </div>
+            <div class="keyboard-row">
+                <button type="button" class="keys" style="font-size: 12px;">ENTER</button>
+                <button type="button" class="keys">Z</button>
+                <button type="button" class="keys">X</button>
+                <button type="button" class="keys">C</button>
+                <button type="button" class="keys">V</button>
+                <button type="button" class="keys">B</button>
+                <button type="button" class="keys">N</button>
+                <button type="button" class="keys">M</button>
+                <button type="button" class="keys" style="font-size: 12px;">DEL</button>
+                
+            </div>
+        </div>
+    </main>
+
+    <script>
+    
+    const actual_words = 'VEGAS';
+    const actual_array = actual_words.split('');
+    let i = 0;
+    let j = 0;
+
+    // Get all letter buttons
+    const letterButtons = document.querySelectorAll('.keys');
+
+    letterButtons.forEach(key => {
+        
+        key.addEventListener('click', () => {
+
+            const gameContainer = document.querySelectorAll('.game-container')[i];
+            // const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
+            const letterKeys = gameContainer.querySelectorAll('.letter-keys');
+
+            // Display the letter of the clicked button in the output
+            const letter = key.textContent;
+            console.log(letter);
+
+            if(/^[A-Z]$/.test(letter)){
+                for (const container of letterKeys) {
+                    if (container.textContent === '') {
+                        j +=1;
+                        container.textContent = letter;
+                        break; // Exit the loop after filling a cell
+                    }
+                }
+            }
+
+            if(letter === 'ENTER' && letterKeys[4].textContent != ''){
+                console.log('Hello');
+                i = i+1;
+                j=0;
+
+                generatecolors(letterKeys);
+            }
+
+            if(letter === 'DEL'){
+                console.log(j);
+
+                letterKeys[j-1].textContent = '';
+                j-=1;
+            }
+        });
+    });
+    
+    document.addEventListener('keydown', (event) => {
+        const gameContainer = document.querySelectorAll('.game-container')[i];
+        const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
+        const letterKeys = gameContainer.querySelectorAll('.letter-keys');
+
+        // Check if the pressed key is a letter (A-Z)3
+        if (/^[A-Z]$/.test(pressedKey)) {
+            
+            // Find the first empty grid cell and fill it with the pressed key
+            for (const container of letterKeys) {
+                if (container.textContent === '') {
+                    j +=1;
+                    container.textContent = pressedKey;
+                    break; // Exit the loop after filling a cell
+                }
+            }
+        }
+
+        if(event.keyCode == 13 && letterKeys[4].textContent != ''){ //Enter key
+            i = i+1;
+            j=0;
+
+            const color = new Array(length).fill('W');
+            let guessed_word = '';
+            
+            letterKeys.forEach((letterKey)=>{
+                guessed_word += letterKey.textContent;
+            });
+
+            for( let k=0; k<5; k++ ){
+                if (actual_array.includes(guessed_word[k])){
+                    if( actual_array[k] == guessed_word[k]){
+                        color[k] = 'G';
+                        letterKeys[k].style.background = '#227526';
+                    }
+                    else{
+                        color[k] = 'Y';
+                        letterKeys[k].style.background = '#8C8818';
+                    }
+                }
+                else{
+                    color[k] = 'B';
+                    letterKeys[k].style.background = '#656565';
+                }
+            }
+        }
+
+        if(event.key == 'Backspace' || event.keyCode == 8){
+            console.log(j);
+
+            letterKeys[j-1].textContent = '';
+            j-=1;
+        }
+
+    });
+
+    function generatecolors(letterKeys){
+        const color = new Array(length).fill('W');
+        let guessed_word = '';
+        
+        letterKeys.forEach((letterKey)=>{
+            guessed_word += letterKey.textContent;
+        });
+
+        for( let k=0; k<5; k++ ){
+            if (actual_array.includes(guessed_word[k])){
+                if( actual_array[k] == guessed_word[k]){
+                    color[k] = 'G';
+                    letterKeys[k].style.background = '#227526';
+                }
+                else{
+                    color[k] = 'Y';
+                    letterKeys[k].style.background = '#8C8818';
+                }
+            }
+            else{
+                color[k] = 'B';
+                letterKeys[k].style.background = '#656565';
+            }
+        }
+
+        // updateKeyboardBackground(color,guessed_word);
+    }
+
+    function updateKeyboardBackground(color,guessed_word){
+        letterButtons.forEach(key => {
+            const letter = key.textContent;
+            if (word.includes(letter)) {
+                key.style.backgroundColor = 'yellow'; // Change the background color
+            } else {
+                key.style.backgroundColor = ''; // Reset the background color
+            }
+        });
+    }
+    
+    </script>
+</body>
+</html>
