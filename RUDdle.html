@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+
     <title>RUDdle</title>
-</head>
+
 <body>
     <div class="topnav">
         <h3>RUDdle</h3>
@@ -101,159 +102,166 @@
     </main>
 
     <script>
-    let actual_words;
-    // Define your dataset of random values
-    const randomValues = ["POINT", "STARK", "HELLO", "VALUE", "DANCE"];
-
-    // Function to update the string with a random value
-    function updateString() {
-        const randomIndex = Math.floor(Math.random() * randomValues.length);
-        actual_words = randomValues[randomIndex];
-        console.log(actual_words);
-
-        // document.getElementById("output").textContent = randomValue;
-    }
-    
-    // Initial update
-    updateString();
-
-    // Set an interval to update the string every 5 minutes (300,000 milliseconds)
-    setInterval(updateString, 60000); // 300,000 milliseconds = 5 minutes
-    //---------------------------------------------------------------------------
-    // const actual_words = 'VEGAS';
-    const actual_array = actual_words.split('');
-    let i = 0;
-    let j = 0;
-
-    // Get all letter buttons
-    const letterButtons = document.querySelectorAll('.keys');
-
-    letterButtons.forEach(key => {
+            
+        let actual_words1;
+        let playing = true;
         
-        key.addEventListener('click', () => {
+        // Define your dataset of random values
+        const randomValues = ["POINT", "STARK", "HELLO", "VALUE", "DANCE"];
+
+        // Function to update the string with a random value
+        function updateString() {
+            const randomIndex = Math.floor(Math.random() * randomValues.length);
+            actual_words1 = randomValues[randomIndex];
+            console.log(actual_words1);
+
+            // document.getElementById("output").textContent = randomValue;
+        }
+        
+        // Initial update
+        updateString();
+
+        // Set an interval to update the string every 5 minutes (300,000 milliseconds)
+        setInterval(updateString, 60000); // 300,000 milliseconds = 5 minutes
+        //---------------------------------------------------------------------------
+        const actual_words = 'MERRY';
+        const actual_array = actual_words.split('');
+        let i = 0;
+        let j = 0;
+
+        // Get all letter buttons
+        const letterButtons = document.querySelectorAll('.keys');
+
+        letterButtons.forEach(key => {
+            
+            key.addEventListener('click', () => {
+                const gameContainer = document.querySelectorAll('.game-container')[i];
+                // const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
+                const letterKeys = gameContainer.querySelectorAll('.letter-keys');
+
+                // Display the letter of the clicked button in the output
+                const letter = key.textContent;
+
+                // console.log(letter);
+
+                if(/^[A-Z]$/.test(letter)){
+                    for (const container of letterKeys) {
+                        if (container.textContent === '') {
+                            j +=1;
+                            container.textContent = letter;
+                            break; // Exit the loop after filling a cell
+                        }
+                    }
+                }
+
+                if(letter === 'ENTER' && letterKeys[4].textContent != ''){
+                    // console.log('Hello');
+                    i = i+1;
+                    j=0;
+                    generatecolors(letterKeys);
+                }
+
+                if(letter === 'DEL'){
+                    // console.log(j);
+                    letterKeys[j-1].textContent = '';
+                    j-=1;
+                }
+            });
+        });
+        
+        document.addEventListener('keydown', (event) => {
             const gameContainer = document.querySelectorAll('.game-container')[i];
-            // const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
+            const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
             const letterKeys = gameContainer.querySelectorAll('.letter-keys');
 
-            // Display the letter of the clicked button in the output
-            const letter = key.textContent;
-            // console.log(letter);
-
-            if(/^[A-Z]$/.test(letter)){
+            // Check if the pressed key is a letter (A-Z)3
+            if (/^[A-Z]$/.test(pressedKey)) {
+                
+                // Find the first empty grid cell and fill it with the pressed key
                 for (const container of letterKeys) {
                     if (container.textContent === '') {
                         j +=1;
-                        container.textContent = letter;
+                        container.textContent = pressedKey;
                         break; // Exit the loop after filling a cell
                     }
                 }
             }
 
-            if(letter === 'ENTER' && letterKeys[4].textContent != ''){
-                // console.log('Hello');
+            if(event.keyCode == 13 && letterKeys[4].textContent != ''){ //Enter key
                 i = i+1;
                 j=0;
-
                 generatecolors(letterKeys);
+
             }
 
-            if(letter === 'DEL'){
+            if(event.key == 'Backspace' || event.keyCode == 8){
                 // console.log(j);
-
                 letterKeys[j-1].textContent = '';
                 j-=1;
             }
-        });
-    });
-    
-    document.addEventListener('keydown', (event) => {
-        const gameContainer = document.querySelectorAll('.game-container')[i];
-        const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
-        const letterKeys = gameContainer.querySelectorAll('.letter-keys');
 
-        // Check if the pressed key is a letter (A-Z)3
-        if (/^[A-Z]$/.test(pressedKey)) {
+        });
+
+        function generatecolors(letterKeys){
+            const color = new Array(length).fill('W');
+            let guessed_word = '';
             
-            // Find the first empty grid cell and fill it with the pressed key
-            for (const container of letterKeys) {
-                if (container.textContent === '') {
-                    j +=1;
-                    container.textContent = pressedKey;
-                    break; // Exit the loop after filling a cell
-                }
-            }
-        }
+            letterKeys.forEach((letterKey)=>{
+                guessed_word += letterKey.textContent;
+            });
 
-        if(event.keyCode == 13 && letterKeys[4].textContent != ''){ //Enter key
-            i = i+1;
-            j=0;
-
-            generatecolors(letterKeys);
-
-        }
-
-        if(event.key == 'Backspace' || event.keyCode == 8){
-            // console.log(j);
-
-            letterKeys[j-1].textContent = '';
-            j-=1;
-        }
-
-    });
-
-    function generatecolors(letterKeys){
-        const color = new Array(length).fill('W');
-        let guessed_word = '';
-        
-        letterKeys.forEach((letterKey)=>{
-            guessed_word += letterKey.textContent;
-        });
-
-        for( let k=0; k<5; k++ ){
-            if (actual_array.includes(guessed_word[k])){
-                if( actual_array[k] == guessed_word[k]){
-                    color[k] = 'G';
-                    letterKeys[k].style.background = '#227526';
+            for( let k=0; k<5; k++ ){
+                if (actual_array.includes(guessed_word[k])){
+                    if( actual_array[k] == guessed_word[k]){
+                        color[k] = 'G';
+                        letterKeys[k].style.background = '#227526';
+                    }
+                    else{
+                        color[k] = 'Y';
+                        letterKeys[k].style.background = '#8C8818';
+                    }
                 }
                 else{
-                    color[k] = 'Y';
-                    letterKeys[k].style.background = '#8C8818';
+                    color[k] = 'B';
+                    letterKeys[k].style.background = '#656565';
                 }
             }
-            else{
-                color[k] = 'B';
-                letterKeys[k].style.background = '#656565';
+
+            updateKeyboardBackground(color,guessed_word);
+
+            if(color.join('') == 'GGGGGG'){
+                playing = false;
             }
         }
 
-        updateKeyboardBackground(color,guessed_word);
-    }
+        function updateKeyboardBackground(color,guessed_word){
 
-    function updateKeyboardBackground(color,guessed_word){
+            for( let k=0; k<5; k++ ){
+                var targetKey = guessed_word[k];
+                const keyElement = document.querySelector(`[data-key="${targetKey}"]`);
 
-        for( let k=0; k<5; k++ ){
-            var targetKey = guessed_word[k];
-            const keyElement = document.querySelector(`[data-key="${targetKey}"]`);
+                const backgroundColor = window.getComputedStyle(keyElement).getPropertyValue('background-color');
 
-            const backgroundColor = window.getComputedStyle(keyElement).getPropertyValue('background-color');
-            // console.log(targetKey);
-            // console.log(backgroundColor);
-            // console.log(document.querySelector(`[data-key="${targetKey}"]`).textContent);
-            if( color[k] == 'G' ){
-                keyElement.style.background = '#227526';
-            }else if( color[k] == 'Y' ){
-                if( backgroundColor != "rgb(34, 117, 38)" ){
-                    // console.log('I m in');
-                    keyElement.style.background = '#8C8818';
+                // console.log(targetKey);
+                // console.log(backgroundColor);
+
+                // console.log(document.querySelector(`[data-key="${targetKey}"]`).textContent);
+                if( color[k] == 'G' ){
+                    keyElement.style.background = '#227526';
+                }else if( color[k] == 'Y' ){
+                    if( backgroundColor != "rgb(34, 117, 38)" ){
+                        // console.log('I m in');
+                        keyElement.style.background = '#8C8818';
+                    }
+                }else if( color[k] == 'B' ){
+                    keyElement.style.background = '#252525';
                 }
-            }else if( color[k] == 'B' ){
-                keyElement.style.background = '#252525';
             }
+            
+            
         }
         
-        
-    }
-    
     </script>
 </body>
+
 </html>
