@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>RUDdle</title>
+</head>
+<body>
+    <div class="topnav">
+        <h3>RUDdle</h3>
+    </div>
+    <main class="main">
+        <div class="container" style="overflow: unset;">
+            <div class="game" style="width: 350px;height: 420px;">  
+                
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+                <div class="game-container">
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                    <div class="letter"><div class="letter-keys"></div></div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="keyboard">
+            <div class="keyboard-row">
+                <button type="button" class="keys" data-key="Q">Q</button>
+                <button type="button" class="keys" data-key="W">W</button>
+                <button type="button" class="keys" data-key="E">E</button>
+                <button type="button" class="keys" data-key="R">R</button>
+                <button type="button" class="keys" data-key="T">T</button>
+                <button type="button" class="keys" data-key="Y">Y</button>
+                <button type="button" class="keys" data-key="U">U</button>
+                <button type="button" class="keys" data-key="I">I</button>
+                <button type="button" class="keys" data-key="O">O</button>
+                <button type="button" class="keys" data-key="P">P</button>
+            </div>
+            <div class="keyboard-row">
+                <div data-testid="spacer" class="space"></div>
+                <button type="button" class="keys" data-key="A">A</button>
+                <button type="button" class="keys" data-key="S">S</button>
+                <button type="button" class="keys" data-key="D">D</button>
+                <button type="button" class="keys" data-key="F">F</button>
+                <button type="button" class="keys" data-key="G">G</button>
+                <button type="button" class="keys" data-key="H">H</button>
+                <button type="button" class="keys" data-key="J">J</button>
+                <button type="button" class="keys" data-key="K">K</button>
+                <button type="button" class="keys" data-key="L">L</button>
+                <div data-testid="spacer" class="space"></div>
+            </div>
+            <div class="keyboard-row">
+                <button type="button" class="keys" style="font-size: 12px;">ENTER</button>
+                <button type="button" class="keys" data-key="Z">Z</button>
+                <button type="button" class="keys"data-key="X">X</button>
+                <button type="button" class="keys" data-key="C">C</button>
+                <button type="button" class="keys" data-key="V">V</button>
+                <button type="button" class="keys" data-key="B">B</button>
+                <button type="button" class="keys" data-key="N">N</button>
+                <button type="button" class="keys" data-key="M">M</button>
+                <button type="button" class="keys" style="font-size: 12px;">DEL</button>
+                
+            </div>
+        </div>
+    </main>
+
+    <script>
+    let actual_words;
+    // Define your dataset of random values
+    const randomValues = ["POINT", "STARK", "HELLO", "VALUE", "DANCE"];
+
+    // Function to update the string with a random value
+    function updateString() {
+        const randomIndex = Math.floor(Math.random() * randomValues.length);
+        actual_words = randomValues[randomIndex];
+        console.log(actual_words);
+
+        // document.getElementById("output").textContent = randomValue;
+    }
+    
+    // Initial update
+    updateString();
+
+    // Set an interval to update the string every 5 minutes (300,000 milliseconds)
+    setInterval(updateString, 60000); // 300,000 milliseconds = 5 minutes
+    //---------------------------------------------------------------------------
+    // const actual_words = 'VEGAS';
+    const actual_array = actual_words.split('');
+    let i = 0;
+    let j = 0;
+
+    // Get all letter buttons
+    const letterButtons = document.querySelectorAll('.keys');
+
+    letterButtons.forEach(key => {
+        
+        key.addEventListener('click', () => {
+            const gameContainer = document.querySelectorAll('.game-container')[i];
+            // const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
+            const letterKeys = gameContainer.querySelectorAll('.letter-keys');
+
+            // Display the letter of the clicked button in the output
+            const letter = key.textContent;
+            // console.log(letter);
+
+            if(/^[A-Z]$/.test(letter)){
+                for (const container of letterKeys) {
+                    if (container.textContent === '') {
+                        j +=1;
+                        container.textContent = letter;
+                        break; // Exit the loop after filling a cell
+                    }
+                }
+            }
+
+            if(letter === 'ENTER' && letterKeys[4].textContent != ''){
+                // console.log('Hello');
+                i = i+1;
+                j=0;
+
+                generatecolors(letterKeys);
+            }
+
+            if(letter === 'DEL'){
+                // console.log(j);
+
+                letterKeys[j-1].textContent = '';
+                j-=1;
+            }
+        });
+    });
+    
+    document.addEventListener('keydown', (event) => {
+        const gameContainer = document.querySelectorAll('.game-container')[i];
+        const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
+        const letterKeys = gameContainer.querySelectorAll('.letter-keys');
+
+        // Check if the pressed key is a letter (A-Z)3
+        if (/^[A-Z]$/.test(pressedKey)) {
+            
+            // Find the first empty grid cell and fill it with the pressed key
+            for (const container of letterKeys) {
+                if (container.textContent === '') {
+                    j +=1;
+                    container.textContent = pressedKey;
+                    break; // Exit the loop after filling a cell
+                }
+            }
+        }
+
+        if(event.keyCode == 13 && letterKeys[4].textContent != ''){ //Enter key
+            i = i+1;
+            j=0;
+
+            generatecolors(letterKeys);
+
+        }
+
+        if(event.key == 'Backspace' || event.keyCode == 8){
+            // console.log(j);
+
+            letterKeys[j-1].textContent = '';
+            j-=1;
+        }
+
+    });
+
+    function generatecolors(letterKeys){
+        const color = new Array(length).fill('W');
+        let guessed_word = '';
+        
+        letterKeys.forEach((letterKey)=>{
+            guessed_word += letterKey.textContent;
+        });
+
+        for( let k=0; k<5; k++ ){
+            if (actual_array.includes(guessed_word[k])){
+                if( actual_array[k] == guessed_word[k]){
+                    color[k] = 'G';
+                    letterKeys[k].style.background = '#227526';
+                }
+                else{
+                    color[k] = 'Y';
+                    letterKeys[k].style.background = '#8C8818';
+                }
+            }
+            else{
+                color[k] = 'B';
+                letterKeys[k].style.background = '#656565';
+            }
+        }
+
+        updateKeyboardBackground(color,guessed_word);
+    }
+
+    function updateKeyboardBackground(color,guessed_word){
+
+        for( let k=0; k<5; k++ ){
+            var targetKey = guessed_word[k];
+            const keyElement = document.querySelector(`[data-key="${targetKey}"]`);
+
+            const backgroundColor = window.getComputedStyle(keyElement).getPropertyValue('background-color');
+            // console.log(targetKey);
+            // console.log(backgroundColor);
+            // console.log(document.querySelector(`[data-key="${targetKey}"]`).textContent);
+            if( color[k] == 'G' ){
+                keyElement.style.background = '#227526';
+            }else if( color[k] == 'Y' ){
+                if( backgroundColor != "rgb(34, 117, 38)" ){
+                    // console.log('I m in');
+                    keyElement.style.background = '#8C8818';
+                }
+            }else if( color[k] == 'B' ){
+                keyElement.style.background = '#252525';
+            }
+        }
+        
+        
+    }
+    
+    </script>
+</body>
+</html>
