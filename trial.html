@@ -2,24 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <title>Overlayed iframe</title>
+    <style>
+        /* Styling for the overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* background-color: rgba(0, 0, 0, 0.7); Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; 
+        }
 
-    <title>RUDdle</title>
+        /* Styling for the iframe (adjust dimensions as needed) */
+        .iframe-container {
+            width: 80%;
+            height: 60%;
+            display: none;
+        }
 
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Remove iframe border */
+        }
+    </style>
+</head>
 <body>
     <div class="topnav">
         <h3>RUDdle</h3>
     </div>
-
+    
     <div class="overlay">
-        <!-- The iframe container -->
         <div class="iframe-container">
             <iframe src="winner.html"></iframe>
         </div>
     </div>
 
-    <main class="main">
+    <div class="overlay">
+        <div class="iframe-container1">
+            <iframe src="loser.html"></iframe>
+        </div>
+    </div>
+
+    <main class ="main">
         <div class="container" style="overflow: unset;">
             <div class="game" style="width: 350px;height: 420px;">  
                 
@@ -112,33 +145,62 @@
 
     <script>
             
-        let actual_words1;
+        let actual_words;
         let playing = true;
-        
+
         // Define your dataset of random values
-        const randomValues = ["POINT", "STARK", "HELLO", "VALUE", "DANCE"];
+        // const randomValues = ["POINT", "STARK", "HELLO", "VALUE", "DANCE"];
 
         // Function to update the string with a random value
         function updateString() {
-            const randomIndex = Math.floor(Math.random() * randomValues.length);
-            actual_words1 = randomValues[randomIndex];
-            console.log(actual_words1);
+            
+            const filePath = 'words.txt';
 
+            return fetch(filePath)
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(textContent => {
+                // Split the text content by spaces and get the first word
+                const words = textContent.split(/\s+/);
+
+                const randomIndex = Math.floor(Math.random() * words.length);
+                actual_words = words[randomIndex];
+                console.log(actual_words);
+                actual_words= actual_words.toUpperCase();
+
+                console.log(actual_words);
+               
+                return actual_words;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+        
+            
         }
         
         // Initial update
-        updateString();
-
+        updateString()
+            .then(() => {
+                console.log('Received actual_words:', actual_words);
+                // You can use actual_words here
+                setInterval(updateString, 30000);
         // Set an interval to update the string every 5 minutes (300,000 milliseconds)
-        setInterval(updateString, 60000); // 300,000 milliseconds = 5 minutes
+        // setInterval(updateString, 60000); // 300,000 milliseconds = 5 minutes
         //---------------------------------------------------------------------------
-        const actual_words = 'MERRY';
-        const actual_array = actual_words.split('');
+        // const actual_words = 'MERRY';
+
+    
+        console.log(actual_words);
+        const actual_array = actual_words.split("");
         let i = 0;
         let j = 0;
-
         const overlayContainer = document.querySelector('.overlay');
-        const iframeContainer = document.querySelector('.iframe-container');
 
         // Get all letter buttons
         const letterButtons = document.querySelectorAll('.keys');
@@ -168,8 +230,18 @@
                 if(letter === 'ENTER' && letterKeys[4].textContent != ''){
                     // console.log('Hello');
                     i = i+1;
+
+                    if(playing == true){
+                        generatecolors(letterKeys);
+                    }
+                    if( i == 6 && playing==true){
+                        playing = false;
+                        document.querySelector('.iframe-container1').style.display = "block";
+                        overlayContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+                        
+                    }
                     j=0;
-                    generatecolors(letterKeys);
+                    
                 }
 
                 if(letter === 'DEL'){
@@ -180,7 +252,6 @@
             });
         });
         
-        // if(playing){
         document.addEventListener('keydown', (event) => {
             const gameContainer = document.querySelectorAll('.game-container')[i];
             const pressedKey = event.key.toUpperCase(); // Convert the pressed key to uppercase
@@ -201,8 +272,18 @@
 
             if(event.keyCode == 13 && letterKeys[4].textContent != ''){ //Enter key
                 i = i+1;
+
+                if(playing == true){
+                    generatecolors(letterKeys);
+                }
+                if( i == 6  && playing==true){
+                    playing = false;
+                    document.querySelector('.iframe-container1').style.display = "block";
+                    overlayContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+                }
                 j=0;
-                generatecolors(letterKeys);
+                
+                
 
             }
 
@@ -242,10 +323,10 @@
 
             updateKeyboardBackground(color,guessed_word);
 
+            console.log(color.join(''));
             if(color.join('') == 'GGGGG'){
                 playing = false;
-
-                iframeContainer.style.display = "block";
+                document.querySelector('.iframe-container').style.display = "block";
                 overlayContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
             }
         }
@@ -255,6 +336,7 @@
             for( let k=0; k<5; k++ ){
                 var targetKey = guessed_word[k];
                 const keyElement = document.querySelector(`[data-key="${targetKey}"]`);
+
                 const backgroundColor = window.getComputedStyle(keyElement).getPropertyValue('background-color');
 
                 // console.log(targetKey);
@@ -275,8 +357,13 @@
             
             
         }
+    })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+
         
     </script>
 </body>
-
 </html>
