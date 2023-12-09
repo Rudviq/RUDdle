@@ -172,3 +172,17 @@ iframe {
     height: 100%;
     border: none; /* Remove iframe border */
 }
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    /* background: white; */
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 99999;
+    display: none;
+  }
+
+  

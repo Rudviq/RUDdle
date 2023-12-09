@@ -8,7 +8,7 @@
     <title>Overlayed iframe</title>
     <style>
         /* Styling for the overlay */
-        .overlay {
+        .overlay,.overlayl {
             position: fixed;
             top: 0;
             left: 0;
@@ -19,6 +19,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999; 
+            display: none;
         }
 
         /* Styling for the iframe (adjust dimensions as needed) */
@@ -39,14 +40,15 @@
     <div class="topnav">
         <h3>RUDdle</h3>
     </div>
-    
+   
+    <button class="close-btn">&times;</button>
     <div class="overlay">
         <div class="iframe-container">
             <iframe src="winner.html"></iframe>
         </div>
     </div>
 
-    <div class="overlay">
+    <div class="overlayl">
         <div class="iframe-container1">
             <iframe src="loser.html"></iframe>
         </div>
@@ -151,6 +153,7 @@
         // Define your dataset of random values
         // const randomValues = ["POINT", "STARK", "HELLO", "VALUE", "DANCE"];
 
+        
         // Function to update the string with a random value
         function updateString() {
             
@@ -173,14 +176,16 @@
                 actual_words= actual_words.toUpperCase();
 
                 console.log(actual_words);
-               
+                
+                
                 return actual_words;
             })
             .catch(error => {
                 console.error('Error:', error);
             });
             
-        
+       
+
             
         }
         
@@ -201,6 +206,7 @@
         let i = 0;
         let j = 0;
         const overlayContainer = document.querySelector('.overlay');
+        const overlayLost = document.querySelector('.overlayl');
 
         // Get all letter buttons
         const letterButtons = document.querySelectorAll('.keys');
@@ -236,8 +242,11 @@
                     }
                     if( i == 6 && playing==true){
                         playing = false;
-                        document.querySelector('.iframe-container1').style.display = "block";
-                        overlayContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+                        overlayLost.style.display = "flex";
+                        // console.log('loser');
+                        document.querySelector('.close-btn').style.display = "block";
+                        document.querySelector('.iframe-container1').style.display = "flex";
+                        overlayLost.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
                         
                     }
                     j=0;
@@ -251,6 +260,8 @@
                 }
             });
         });
+        
+        
         
         document.addEventListener('keydown', (event) => {
             const gameContainer = document.querySelectorAll('.game-container')[i];
@@ -278,8 +289,11 @@
                 }
                 if( i == 6  && playing==true){
                     playing = false;
-                    document.querySelector('.iframe-container1').style.display = "block";
-                    overlayContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+                    overlayLost.style.display = "flex";
+                    // console.log('loser');
+                    document.querySelector('.close-btn').style.display = "block";
+                    document.querySelector('.iframe-container1').style.display = "flex";
+                    overlayLost.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
                 }
                 j=0;
                 
@@ -295,6 +309,16 @@
 
         });
     
+        // Function to handle closing the overlay
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('close-btn')) {
+                overlayContainer.style.display = "none";
+                overlayLost.style.display = "none";
+                document.querySelector('.close-btn').style.display = "none";
+
+            }
+        });
+            
 
         function generatecolors(letterKeys){
             const color = new Array(length).fill('W');
@@ -326,6 +350,9 @@
             console.log(color.join(''));
             if(color.join('') == 'GGGGG'){
                 playing = false;
+                console.log("Check");
+                overlayContainer.style.display = "flex";
+                document.querySelector('.close-btn').style.display = "block";
                 document.querySelector('.iframe-container').style.display = "block";
                 overlayContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
             }

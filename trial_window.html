@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... Your existing head content ... -->
+</head>
+<body>
+    <div class="topnav">
+        <h3>RUDdle</h3>
+    </div>
+    
+    <div class="overlay" id="winnerOverlay" >
+        <div class="iframe-container">
+            <iframe src="winner.html"></iframe>
+        </div>
+        <button id="closeWinnerFrame">Close</button>
+        <button id="okWinnerFrame">OK</button>
+    </div>
+
+    <!-- ... Your existing HTML content ... -->
+
+    <script>
+        // ... Your existing JavaScript code ...
+
+        // Display the winner frame
+        function showWinnerFrame() {
+            const winnerOverlay = document.getElementById("winnerOverlay");
+            winnerOverlay.style.display = "block";
+        }
+
+        // Close the winner frame
+        function closeWinnerFrame() {
+            const winnerOverlay = document.getElementById("winnerOverlay");
+            winnerOverlay.style.display = "none";
+        }
+
+        // Handle the "OK" button in the winner frame
+        const okWinnerFrameButton = document.getElementById("okWinnerFrame");
+        okWinnerFrameButton.addEventListener("click", () => {
+            // Handle the "OK" action here (e.g., proceed to the next step or reset the game)
+            closeWinnerFrame(); // Close the winner frame
+        });
+
+        // Handle the "Close" button in the winner frame
+        const closeWinnerFrameButton = document.getElementById("closeWinnerFrame");
+        closeWinnerFrameButton.addEventListener("click", () => {
+            closeWinnerFrame(); // Close the winner frame
+        });
+    </script>
+</body>
+</html>
