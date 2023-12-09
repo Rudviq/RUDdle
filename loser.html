@@ -14,14 +14,36 @@
             border: solid white;
             /* color: white; */
         }
-        .announce p{
+        .announce h4,h5{
             color: white;
+            text-align: center;
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        .announce img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 40%;
         }
     </style>
 </head>
 <body>
     <div class = "announce" >
-        <p>Better Luck next time :(</p>
+        <img src="static/lose.png">
+        <h4>Better Luck next time !</h4>
+
+        <!-- <h4>Actual Word</h4> -->
+        <h5 id="actualWordsDisplay"></h5>
     </div>
 </body>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const actualWords = urlParams.get('actual_words');
+    console.log('In loser',actualWords); // Use the value received from the URL parameters
+    
+    const actualWordsDisplay = document.getElementById('actualWordsDisplay');
+    actualWordsDisplay.textContent = ` ${actualWords}`;
+</script>
 </html>

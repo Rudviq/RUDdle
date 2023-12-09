@@ -5,7 +5,7 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Overlayed iframe</title>
+    <title>RUDdle</title>
     <style>
         /* Styling for the overlay */
         .overlay,.overlayl {
@@ -44,13 +44,13 @@
     <button class="close-btn">&times;</button>
     <div class="overlay">
         <div class="iframe-container">
-            <iframe src="winner.html"></iframe>
+            <iframe id="winnerFrame" src="winner.html"></iframe>
         </div>
     </div>
 
     <div class="overlayl">
         <div class="iframe-container1">
-            <iframe src="loser.html"></iframe>
+            <iframe id="loserFrame"src="loser.html"></iframe>
         </div>
     </div>
 
@@ -193,8 +193,13 @@
         updateString()
             .then(() => {
                 console.log('Received actual_words:', actual_words);
+                const winnerFrame = document.getElementById('winnerFrame');
+                const loserFrame = document.getElementById('loserFrame');
+                winnerFrame.src = `winner.html?actual_words=${encodeURIComponent(actual_words)}`;
+                loserFrame.src = `loser.html?actual_words=${encodeURIComponent(actual_words)}`;
+        
                 // You can use actual_words here
-                setInterval(updateString, 30000);
+                // setInterval(updateString, 30000);
         // Set an interval to update the string every 5 minutes (300,000 milliseconds)
         // setInterval(updateString, 60000); // 300,000 milliseconds = 5 minutes
         //---------------------------------------------------------------------------

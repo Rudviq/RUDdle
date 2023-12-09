@@ -14,14 +14,30 @@
             border: solid white;
             /* color: white; */
         }
-        .announce p{
+        .announce h4{
             color: white;
+            text-align: center;
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        .announce img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            /* width: 50%; */
         }
     </style>
 </head>
 <body>
     <div class = "announce" >
-        <p>Congratulations you are the winner!!</p>
+        <img src="static/crown_win.png">
+        <h4>Bravo !! That was a great guess ! </h4>
     </div>
 </body>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const actualWords = urlParams.get('actual_words');
+    console.log('In winner',actualWords); // Use the value received from the URL parameters
+</script>
 </html>
