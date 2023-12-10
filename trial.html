@@ -5,6 +5,7 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <title>RUDdle</title>
     <style>
         /* Styling for the overlay */
@@ -23,11 +24,7 @@
         }
 
         /* Styling for the iframe (adjust dimensions as needed) */
-        .iframe-container {
-            width: 80%;
-            height: 60%;
-            display: none;
-        }
+        
 
         iframe {
             width: 100%;
@@ -56,7 +53,7 @@
 
     <main class ="main">
         <div class="container" style="overflow: unset;">
-            <div class="game" style="width: 350px;height: 420px;">  
+            <div class="game" >  
                 
                 <div class="game-container">
                     <div class="letter"><div class="letter-keys"></div></div>
@@ -183,10 +180,7 @@
             .catch(error => {
                 console.error('Error:', error);
             });
-            
-       
-
-            
+                        
         }
         
         // Initial update
